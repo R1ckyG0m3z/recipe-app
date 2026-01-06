@@ -1,19 +1,30 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './RecipeDetails.css';
 
 const RecipeDetails = ({ recipes, onDeleteRecipe }) => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { isFavorite, addFavorite, removeFavorite } = useAuth();
   const recipe = recipes.find((r) => r.id === parseInt(id));
   
   // User-created recipes have timestamp IDs (> 12), original recipes have IDs 1-12
   const isUserCreated = recipe && recipe.id > 12;
+  const favorite = recipe && isFavorite(recipe.id);
 
   const handleDelete = () => {
     if (window.confirm('Are you sure you want to delete this recipe?')) {
       onDeleteRecipe(recipe.id);
       navigate('/');
+    }
+  };
+
+  const handleFavoriteToggle = () => {
+    if (favorite) {
+      removeFavorite(recipe.id);
+    } else {
+      addFavorite(recipe.id);
     }
   };
 
@@ -52,6 +63,13 @@ const RecipeDetails = ({ recipes, onDeleteRecipe }) => {
               <span className="badge difficulty-badge">{recipe.difficulty}</span>
             </div>
           </div>
+          <button 
+            className={`favorite-detail-btn ${favorite ? 'favorited' : ''}`}
+            onClick={handleFavoriteToggle}
+            title={favorite ? 'Remove from favorites' : 'Add to favorites'}
+          >
+            {favorite ? '❤️ Favorited' : '🤍 Add to Favorites'}
+          </button>
         </div>
 
         <div className="recipe-image-detail">
