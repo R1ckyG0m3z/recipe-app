@@ -1,0 +1,17 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Georgia', 'Palatino', serif;
+  background: linear-gradient(135deg, #8B4513 0%, #D2691E 50%, #CD853F 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  color: #2C1810;
+}
+
+#root {
+  min-height: 100vh;
+}
